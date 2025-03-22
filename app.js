@@ -5,13 +5,23 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const helper = require('./helpers/index')
+require('./config/db')
 
+// Connect DB
+mongoose.Promise = global.Promise;
 
 var cors = require("cors");
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/uploads", express.static("uploads"));
+
+// Routes
+const userRoutes = require('./routes/user')
+
+
+// API End Point
+app.use('/api',userRoutes)
 
 // cors middleware
 app.use((req, res, next) => {
@@ -24,7 +34,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
 
 app.use("/cancel", (req, res) => {
   console.log("cancel");
@@ -55,5 +64,7 @@ app.use(async (error, req, res, next) => {
     error: error.message,
   });
 });
+
+
 
 module.exports = app
