@@ -27,6 +27,9 @@ const fixedDepositSchema = new mongoose.Schema(
       enum: ["Monthly", "Quarterly", "Yearly", "On Maturity"],
       required: true,
     },
+    interestRate: {
+      type: mongoose.Schema.Types.Decimal128,
+    },
     investment_type: {
       type: String,
     },

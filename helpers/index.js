@@ -167,13 +167,18 @@ const generateMockData = (investmentType, platform, user, count = 1) => {
           max: 1000000,
           precision: 0.01,
         });
-        baseData.tenure = faker.number.int({ min: 1, max: 120 });
+        baseData.tenure = faker.number.int({ min: 1, max: 200 });
         baseData.payoutOption = faker.helpers.arrayElement([
           "Monthly",
           "Quarterly",
           "Yearly",
           "On Maturity",
         ]);
+        baseData.interestRate = faker.number.float({
+          min: 7,
+          max: 8.5,
+          precision: 0.01,
+        });
         break;
 
       case "Gold":
