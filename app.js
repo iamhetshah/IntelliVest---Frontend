@@ -18,10 +18,12 @@ app.use("/uploads", express.static("uploads"));
 
 // Routes
 const userRoutes = require('./routes/user')
+const llmRoutes = require('./routes/llm')
 
 
 // API End Point
 app.use('/api',userRoutes)
+app.use('/api/v1',llmRoutes)
 
 // cors middleware
 app.use((req, res, next) => {
