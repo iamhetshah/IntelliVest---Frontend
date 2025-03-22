@@ -494,7 +494,6 @@ router.post('/llm-dashboard', userMiddleware, async (req, res, next) => {
 router.post('/llm-user-profolio-analysis', userMiddleware, async (req, res, next) => {
   try {
     const userId = req.userData._id;
-    
     // Fetch all investment data
     const [fixedDeposits, goldInvestments, mutualFunds, ppfInvestments, stocks] = await Promise.all([
       FixedDeposit.find({ userId }),
