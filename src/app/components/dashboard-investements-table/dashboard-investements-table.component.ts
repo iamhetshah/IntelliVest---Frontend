@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { Table } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -6,7 +7,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
-import { Table, TableModule } from 'primeng/table';
+import { TableModule } from 'primeng/table';
+import { ProgressBar } from 'primeng/progressbar';
+import { Button, ButtonModule } from 'primeng/button';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-dashboard-investements-table',
@@ -20,6 +24,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SelectModule,
     CommonModule,
     FormsModule,
+    ButtonModule,
+    ProgressBar,
+    Button,
     ReactiveFormsModule,
   ],
   templateUrl: './dashboard-investements-table.component.html',
@@ -407,9 +414,6 @@ export class DashboardInvestementsTableComponent {
       balance: 4609,
     },
   ];
-
-  representativeFilter = signal<any[]>([]);
-  statusFilter = signal<string | null>(null);
 
   returnEventAsInputElement(event: any) {
     return event.target as HTMLInputElement;
