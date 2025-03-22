@@ -1,0 +1,99 @@
+<div class="fixed bottom-4 right-4 z-10">
+    <button pButton pRipple size="large" class="shadow-xl">
+        <i class="pi pi-indian-rupee"></i>
+        <span pButtonLabel>Add Investement</span>
+    </button>
+</div>
+<app-navbar></app-navbar>
+<br>
+<main class="p-5 mb-52">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <i class="pi pi-dollar text-7xl text-green-500"></i>
+                <span class="text-xs font-medium text-gray-500">Total Portfolio Value</span>
+            </div>
+            <div class="flex justify-between items-end">
+                <div>
+                    <h3 class="text-2xl font-bold">$124,500</h3>
+                    <p class="text-sm text-green-500">+2.5% this month</p>
+                </div>
+                <div>
+                    <button pButton severity="secondary" pRipple size="small">
+                        <i class="pi pi-sparkles"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <i class="pi pi-chart-line text-blue-500"></i>
+                <span class="text-xs font-medium text-gray-500">Total Returns</span>
+            </div>
+            <div class="flex justify-between items-end">
+                <div>
+                    <h3 class="text-2xl font-bold">+15.2%</h3>
+                    <p class="text-sm text-blue-500">Above market average</p>
+                </div>
+                <div>
+                    <button pButton severity="secondary" pRipple size="small">
+                        <i class="pi pi-sparkles"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <i class="pi pi-exclamation-triangle text-gray-500"></i>
+                <span class="text-xs font-medium text-gray-500">Risk Score</span>
+            </div>
+            <div class="flex justify-between items-end">
+                <div>
+                    <h3 class="text-2xl font-bold">Moderate</h3>
+                    <p class="text-sm text-orange-500">Well balanced</p>
+                </div>
+                <div>
+                    <button pButton severity="secondary" pRipple size="small">
+                        <i class="pi pi-sparkles"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="grid lg:grid-cols-2 grid-cols-1 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Portfolio Allocation</h3>
+                <button pButton severity="secondary" pRipple size="small">
+                    <i class="pi pi-sparkles"></i>
+                </button>
+            </div>
+            <div class="flex items-center justify-center">
+                <canvas #pieChartCanvas></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Investement Performance</h3>
+                <button pButton severity="secondary" pRipple size="small">
+                    <i class="pi pi-sparkles"></i>
+                </button>
+            </div>
+            <div class="flex items-center justify-center">
+                <canvas #lineChartCanvas></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Investements</h3>
+            <button pButton severity="secondary" pRipple size="small">
+                <i class="pi pi-sparkles"></i>
+            </button>
+        </div>
+        <app-dashboard-investements-table></app-dashboard-investements-table>
+    </div>
+</main>

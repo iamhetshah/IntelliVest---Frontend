@@ -1,0 +1,52 @@
+<div class="w-full h-screen flex justify-center items-center">
+    <div class="flex min-h-full min-w-[500px] flex-col justify-center px-6 py-12 lg:px-8">
+        <div class="border rounded border-zinc-200 shadow p-10">
+            <h1 class=" text-3xl text-center">INTELLIVEST</h1>
+            <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <form class="space-y-6" method="POST" [formGroup]="this.loginForm">
+                    <div>
+                        <div class="mt-2">
+                            <p-inputgroup>
+                                <p-inputgroup-addon>
+                                    <i class="pi pi-at"></i>
+                                </p-inputgroup-addon>
+                                <input pInputText formControlName="username" placeholder="Username" />
+                            </p-inputgroup>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="mt-2">
+                            <p-inputgroup>
+                                <p-inputgroup-addon>
+                                    <i class="pi pi-key"></i>
+                                </p-inputgroup-addon>
+                                <!-- <p-password formControlName="password" placeholder="password" toggleMask="true" /> -->
+                                <input pPassword #password [showPassword]="showPassword" toggleMask="true"
+                                    type="password" feedback="false" formControlName="password"
+                                    placeholder="Password" />
+                                <p-inputgroup-addon>
+                                    @if (!this.showPassword) {
+
+                                    <i class="pi pi-eye" (click)="this.showPassword = !this.showPassword"></i>
+                                    } @else {
+                                    <i class="pi pi-eye-slash" (click)="this.showPassword = !this.showPassword"></i>
+                                    }
+                                </p-inputgroup-addon>
+                            </p-inputgroup>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p-button (onClick)="this.login()" styleClass="w-full" label="Login" />
+                    </div>
+                </form>
+                <h3 class="text-center pt-6 text-zinc-500">Not a user?
+                    <a class="text-sky-700" routerLink="/register">
+                        Sign up
+                    </a>
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>

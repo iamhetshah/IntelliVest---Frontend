@@ -1,0 +1,145 @@
+<div class="flex h-screen items-center justify-center">
+    <div class="grid gap-10 w-full place-items-center">
+        <div class="card w-3/4">
+            <p-steps [activeIndex]="active" [model]="items" />
+        </div>
+        <div class="card grid border lg:w-1/2 w-3/4 rounded border-zinc-200 shadow p-10"
+            [formGroup]="this.registerForm">
+            <h1 class=" text-5xl text-center">INTELLIVEST</h1>
+            @if (this.active == 0) {
+            <div class="space-y-6 my-4">
+                <div>
+                    <div class="mt-2">
+                        <p-inputgroup>
+                            <p-inputgroup-addon>
+                                <i class="pi pi-user"></i>
+                            </p-inputgroup-addon>
+                            <input pInputText formControlName="username" placeholder="Username" />
+                        </p-inputgroup>
+                    </div>
+                </div>
+                <div>
+                    <div class="mt-2">
+                        <p-inputgroup>
+                            <p-inputgroup-addon>
+                                <i class="pi pi-key"></i>
+                            </p-inputgroup-addon>
+                            <!-- <p-password formControlName="password" placeholder="password" toggleMask="true" /> -->
+                            <input pPassword #password [showPassword]="showPassword" toggleMask="true" type="password"
+                                toggle formControlName="password" placeholder="Password" />
+                            <p-inputgroup-addon>
+                                @if (!this.showPassword) {
+
+                                <i class="pi pi-eye" (click)="this.showPassword = !this.showPassword"></i>
+                                } @else {
+                                <i class="pi pi-eye-slash" (click)="this.showPassword = !this.showPassword"></i>
+                                }
+                            </p-inputgroup-addon>
+                        </p-inputgroup>
+                    </div>
+                </div>
+                <div>
+                    <div class="mt-2">
+                        <p-inputgroup>
+                            <p-inputgroup-addon>
+                                <i class="pi pi-key"></i>
+                            </p-inputgroup-addon>
+                            <!-- <p-password formControlName="password" placeholder="password" toggleMask="true" /> -->
+                            <input pPassword #confirmPassword (change)="this.confirmPassword = confirmPassword.value"
+                                [showPassword]="showConfirmPassword" toggleMask="true" type="password"
+                                placeholder="Confirm Password" [value]="this.confirmPassword" [feedback]="false" />
+                            <p-inputgroup-addon>
+                                @if (!this.showConfirmPassword) {
+                                <i class="pi pi-eye" (click)="this.showConfirmPassword = !this.showConfirmPassword"></i>
+                                } @else {
+                                <i class="pi pi-eye-slash"
+                                    (click)="this.showConfirmPassword = !this.showConfirmPassword"></i>
+                                }
+                            </p-inputgroup-addon>
+                        </p-inputgroup>
+                    </div>
+                </div>
+            </div>
+            }
+            @if(this.active == 1) {
+            <div class="space-y-6 my-4">
+                <div>
+                    <div class="mt-2">
+                        <p-inputgroup>
+                            <p-inputgroup-addon>
+                                <i class="pi pi-user"></i>
+                            </p-inputgroup-addon>
+                            <input pInputText formControlName="first_name" placeholder="First Name" />
+                        </p-inputgroup>
+                    </div>
+                </div>
+                <div>
+                    <div class="mt-2">
+                        <p-inputgroup>
+                            <p-inputgroup-addon>
+                                <i class="pi pi-user"></i>
+                            </p-inputgroup-addon>
+                            <input pInputText formControlName="last_name" placeholder="Last Name" />
+                        </p-inputgroup>
+                    </div>
+                </div>
+                <div>
+                    <div class="mt-2">
+                        <p-inputgroup>
+                            <p-inputgroup-addon>
+                                <i class="pi pi-at"></i>
+                            </p-inputgroup-addon>
+                            <input pInputText formControlName="email" placeholder="Email" />
+                        </p-inputgroup>
+                    </div>
+                </div>
+            </div>
+            }
+            @if (this.active == 2) {
+            <div class="grid place-items-center gap-7 py-10">
+                <h1 class="text-xl md:text-3xl font-bold text-center text-zinc-700">
+                    Where have you invested before?
+                </h1>
+                <div class="flex gap-5 flex-wrap py-4 items-center">
+                    @for (item of this.thirdPartyList; track $index) {
+
+                    <p-chip [label]="item.name" [image]="item.logo" (click)="item.selected = !item.selected"
+                        [ngClass]="{'ring-4 ring-green-300': item.selected}" alt="Avatar image"
+                        styleClass="shadow-xs cursor-pointer duration-300" />
+
+                    }
+                </div>
+                <span class="flex items-center gap-3 text-zinc-500 mt-3">
+                    <i class="pi pi-info-circle"></i>
+                    We will fetch your investements so that you dont have to add manually! Or you can skip!
+                </span>
+            </div>
+            }
+            @for (err of this.errors; track $index) {
+            <p-message severity="error" variant="simple">
+                <i class="pi pi-info-circle me-3"></i>
+                {{err}}
+            </p-message>
+            }
+            <div class="flex justify-between gap-5 mt-4">
+                <p-button label="Prev" iconPos="left" size="large" icon="pi pi-angle-left" (onClick)="prev()"
+                    [disabled]="this.active == 0" />
+                @if (this.active
+                < this.items!.length - 1) { <p-button label="Next" size="large" iconPos="right" icon="pi pi-angle-right"
+                    (onClick)="next()" />
+                }
+                @else {
+                <p-button (onClick)="this.register()" label="Register" size="large"
+                    [disabled]="this.registerForm.invalid" />
+                }
+            </div>
+            @if (this.active == 0) {
+            <h3 class="text-center pt-3 text-zinc-500">Already a user?
+                <a class="text-sky-700" routerLink="/login">
+                    Log in
+                </a>
+            </h3>
+            }
+        </div>
+    </div>
+</div>
