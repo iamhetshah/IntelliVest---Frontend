@@ -1,0 +1,36 @@
+<div>
+    @if(this.selectedInvestement === '') {
+    <h1 class="text-3xl text-zinc-700 text-center font-bold">What do you want to invest in?</h1>
+    <div class="flex gap-3 flex-wrap justify-center items-center p-4 mt-9">
+        @for (item of this.investementsTypes; track $index) {
+        <p-card [style]="{ width: '13rem', overflow: 'hidden' }" (click)="this.selectedInvestement = item.name"
+            class="cursor-pointer">
+            <div class="grid place-items-center gap-3">
+                <i [class]="item.icon" style="font-size: xx-large;"></i>
+                <span class="font-bold">
+                    {{item.name}}
+                </span>
+            </div>
+        </p-card>
+        }
+    </div>
+    }
+    @if(this.selectedInvestement.toLowerCase() === 'stock') {
+    <h1 class="text-3xl text-zinc-700 font-bold">Stock Investement</h1>
+    <app-add-investement-stock></app-add-investement-stock>
+    }
+    @if(this.selectedInvestement.toLowerCase() === 'mutual funds') {
+    <h1 class="text-3xl text-zinc-700 font-bold">Mutual Funds</h1>
+    <app-add-investement-mutual-funds></app-add-investement-mutual-funds>
+
+    }
+    @if(this.selectedInvestement.toLowerCase() === 'gold') {
+    <h1 class="text-3xl text-zinc-700 font-bold">Gold Investement</h1>
+    <app-add-investement-gold></app-add-investement-gold>
+    }
+
+    @if(this.selectedInvestement.toLowerCase() === 'ppf') {
+    <h1 class="text-3xl text-zinc-700 font-bold">PPF Investement</h1>
+    <app-add-investement-ppf></app-add-investement-ppf>
+    }
+</div>

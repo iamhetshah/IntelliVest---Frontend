@@ -1,0 +1,45 @@
+<div class="p-3 grid gap-5" [formGroup]="this.stockForm">
+    <p-select [options]="stocks" required="true" size="large" formControlName="investmentName" optionLabel="name"
+        [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a stock" class="w-full">
+        <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2">
+                <div>{{ selectedOption.name }} {{selectedOption.price}}</div>
+            </div>
+        </ng-template>
+        <ng-template let-stock #item>
+            <div class="flex items-center justify-between w-full">{{ stock.name }}
+                <span class="font-bold">
+                    <i class="pi pi-indian-rupee"></i>{{stock.price}}
+                </span>
+            </div>
+        </ng-template>
+    </p-select>
+    <p-floatlabel variant="on">
+        <p-inputnumber required="true" class="w-full" size="large" inputId="integeronly" [min]="0" [max]="100"
+            [showButtons]="true" formControlName="stockQuantity" id="stockQuantity" />
+        <label for="stockQuantity">Quantity</label>
+    </p-floatlabel>
+    <p-selectbutton required="true" styleClass="w-full" size="large" formControlName="stockAction" [options]="options"
+        size="large" />
+    <p-inputnumber required="true" formControlName="timeHorizon" inputId="expiry" prefix="Sell/Buy in "
+        suffix=" months" />
+    <span class="flex items-center gap-3 text-zinc-500 mt-3">
+        <i class="pi pi-info-circle"></i>
+        Enter number of months you are expecting to hold this stock for. This is only for analyzing your stock
+        investment.
+    </span>
+    @if (!this.saveInvestShow) {
+    <p-button styleClass="float-end mt-3" [loading]="loading" size="large"
+        [label]="this.loading?'We are analyzing your investment':'Analyze'" (onClick)="this.analyze()" />
+    }
+    @if(this.tryAgainAnalyze) {
+    <p-message severity="error" variant="outlined">Please try again!</p-message>
+    } @else {
+    <app-investement-analysis-stock [data]="this.sanitizedHtml">
+    </app-investement-analysis-stock>
+    }
+
+    @if (this.saveInvestShow) {
+    <p-button styleClass="mt-3 w-full" size="large" [label]="'Invest'" (onClick)="this.saveInvest()" />
+    }
+</div>

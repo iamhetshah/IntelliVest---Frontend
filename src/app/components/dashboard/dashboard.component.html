@@ -1,74 +1,127 @@
+<p-dialog [(visible)]="visible" [modal]="true" [maximizable]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }" [draggable]="false"
+    [resizable]="false">
+    <ng-template #header>
+        <i class="pi pi-arrow-left cursor-pointer" (click)="backClicked.emit()"></i>
+    </ng-template>
+    <app-add-investement [backClicked]="backClicked"></app-add-investement>
+</p-dialog>
+
 <div class="fixed bottom-4 right-4 z-10">
-    <button pButton pRipple size="large" class="shadow-xl">
-        <i class="pi pi-indian-rupee"></i>
-        <span pButtonLabel>Add Investement</span>
-    </button>
+    <div class="flex gap-3">
+        <button pButton pRipple size="large" (click)="this.showDialog()" class="shadow-xl">
+            <i class="pi pi-indian-rupee"></i>
+            <span pButtonLabel>Add Investement</span>
+        </button>
+    </div>
 </div>
 <app-navbar></app-navbar>
 <br>
 <main class="p-5 mb-52">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div class="flex items-center justify-between mb-4">
-                <i class="pi pi-dollar text-7xl text-green-500"></i>
-                <span class="text-xs font-medium text-gray-500">Total Portfolio Value</span>
+                <i class="pi pi-indian-rupee text-7xl text-green-500"></i>
+                <span class=" font-medium text-gray-500">Total Portfolio Value</span>
             </div>
             <div class="flex justify-between items-end">
                 <div>
-                    <h3 class="text-2xl font-bold">$124,500</h3>
-                    <p class="text-sm text-green-500">+2.5% this month</p>
+                    <h3 class="text-2xl font-bold">{{this.portfolioData()?.data?.metrics?.totalCurrentValue | number:
+                        '1.0-0'}}</h3>
+                    <p class="text-lg font-bold text-green-500">
+                        {{this.portfolioData()?.data?.metrics?.totalInvestedAmount |
+                        number:
+                        '1.0-0'}}
+                        amount invested</p>
                 </div>
                 <div>
-                    <button pButton severity="secondary" pRipple size="small">
+                    <!-- <button pButton severity="secondary" pRipple size="small">
                         <i class="pi pi-sparkles"></i>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div class="flex items-center justify-between mb-4">
                 <i class="pi pi-chart-line text-blue-500"></i>
-                <span class="text-xs font-medium text-gray-500">Total Returns</span>
+                <span class=" font-medium text-gray-500">Total Returns</span>
             </div>
             <div class="flex justify-between items-end">
                 <div>
-                    <h3 class="text-2xl font-bold">+15.2%</h3>
-                    <p class="text-sm text-blue-500">Above market average</p>
+                    <h3 class="text-2xl font-bold"><i
+                            class="pi pi-indian-rupee"></i>{{this.portfolioData()?.data?.metrics?.totalProfit | number:
+                        '1.0-0'}}</h3>
+                    @if (this.portfolioData()?.data?.metrics?.profitPercentage &&
+                    this.convertToNumber(this.portfolioData()!.data.metrics.profitPercentage) > 0) {
+                    <p class="text-lg font-bold text-blue-500">
+                        {{this.portfolioData()?.data?.metrics?.profitPercentage}}%</p>
+                    } @else if(this.portfolioData()?.data?.metrics?.profitPercentage) {
+                    <p class="text-lg font-bold text-red-500">
+                        -{{this.portfolioData()?.data?.metrics?.profitPercentage}}%</p>
+                    }
                 </div>
                 <div>
-                    <button pButton severity="secondary" pRipple size="small">
+                    <!-- <button pButton severity="secondary" pRipple size="small">
                         <i class="pi pi-sparkles"></i>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div class="flex items-center justify-between mb-4">
                 <i class="pi pi-exclamation-triangle text-gray-500"></i>
-                <span class="text-xs font-medium text-gray-500">Risk Score</span>
+                <span class=" font-medium text-gray-500">Risk Score</span>
             </div>
             <div class="flex justify-between items-end">
                 <div>
-                    <h3 class="text-2xl font-bold">Moderate</h3>
-                    <p class="text-sm text-orange-500">Well balanced</p>
+                    <h3 class="text-2xl font-bold">{{this.portfolioData()?.data?.metrics?.riskProfile}}</h3>
+                    <p class="text-lg font-bold text-orange-500">Your risk score is
+                        {{this.portfolioData()?.data?.metrics?.riskScore}} out of 10</p>
                 </div>
                 <div>
-                    <button pButton severity="secondary" pRipple size="small">
+                    <!-- <button pButton severity="secondary" pRipple size="small">
                         <i class="pi pi-sparkles"></i>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
+    </div>
+    <div class="grid gap-7 grid-cols-1 md:grid-cols-3 mb-8">
+        @if(this.portfolioData()){<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h1 class="font-bold text-xl mb-3">Recommendations</h1>
+            <ul class="grid gap-5">
+                @for (item of this.portfolioData()?.data?.analysis?.insights?.recommendations; track $index) {
+                <li class="p-2 rounded text-zinc-600 text-">{{item}}</li>
+                }
+            </ul>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h1 class="font-bold text-xl mb-3">Strengths</h1>
+            <ul class="grid gap-5">
+                @for (item of this.portfolioData()?.data?.analysis?.insights?.strengths; track $index) {
+                <li class="p-2 rounded text-zinc-600 text-">{{item}}</li>
+                }
+            </ul>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h1 class="font-bold text-xl mb-3">Weaknesses</h1>
+            <ul class="grid gap-5">
+                @for (item of this.portfolioData()?.data?.analysis?.insights?.weaknesses; track $index) {
+                <li class="p-2 rounded text-zinc-600 text-">{{item}}</li>
+                }
+            </ul>
+        </div>
+        }
     </div>
     <div class="grid lg:grid-cols-2 grid-cols-1 gap-6 mb-8">
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">Portfolio Allocation</h3>
-                <button pButton severity="secondary" pRipple size="small">
+                <!-- <button pButton severity="secondary" pRipple size="small">
                     <i class="pi pi-sparkles"></i>
-                </button>
+                </button> -->
             </div>
             <div class="flex items-center justify-center">
                 <canvas #pieChartCanvas></canvas>
@@ -78,9 +131,9 @@
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">Investement Performance</h3>
-                <button pButton severity="secondary" pRipple size="small">
+                <!-- <button pButton severity="secondary" pRipple size="small">
                     <i class="pi pi-sparkles"></i>
-                </button>
+                </button> -->
             </div>
             <div class="flex items-center justify-center">
                 <canvas #lineChartCanvas></canvas>
@@ -89,11 +142,11 @@
     </div>
     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold">Investements</h3>
-            <button pButton severity="secondary" pRipple size="small">
+            <h3 class="text-lg  font-semibold">Investements</h3>
+            <!-- <button pButton severity="secondary" pRipple size="small">
                 <i class="pi pi-sparkles"></i>
-            </button>
+            </button> -->
         </div>
-        <app-dashboard-investements-table></app-dashboard-investements-table>
+        <app-dashboard-investments-table></app-dashboard-investments-table>
     </div>
 </main>

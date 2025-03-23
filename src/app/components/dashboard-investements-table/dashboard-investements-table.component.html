@@ -1,111 +1,105 @@
 <div class="card">
-    <p-table #dt2 [value]="customers" dataKey="id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading"
-        [paginator]="true" [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        [tableStyle]="{ 'min-width': '75rem' }">
-        <ng-template #caption>
+    <p-table #dt2 [value]="investments" dataKey="id" [loading]="loading"
+        [globalFilterFields]="['platform', 'type', 'amount']" [tableStyle]="{ 'min-width': '75rem' }">
+        <ng-template pTemplate="caption">
             <div class="flex">
                 <p-iconfield iconPosition="left" class="ml-auto">
                     <p-inputicon>
                         <i class="pi pi-search"></i>
                     </p-inputicon>
                     <input pInputText type="text"
-                        (input)="dt2.filterGlobal(this.returnEventAsInputElement($event).value, 'contains')"
-                        placeholder="Search keyword" />
+                        (input)="dt2.filterGlobal(returnEventAsInputElement($event).value, 'contains')"
+                        placeholder="Search investments" />
                 </p-iconfield>
             </div>
         </ng-template>
-        <ng-template #header>
+        <ng-template pTemplate="header">
             <tr>
-                <th style="width:22%">Name</th>
-                <th style="width:22%">Country</th>
-                <th style="width:22%">Agent</th>
-                <th style="width:22%">Status</th>
-                <th style="width:12%">Verified</th>
+                <th style="width:15%">Platform</th>
+                <th style="width:15%">Type</th>
+                <th style="width:18%">Amount</th>
+                <th style="width:15%">Interest Rate</th>
+                <th style="width:15%">Tenure/Quantity</th>
+                <th style="width:22%">Details</th>
             </tr>
             <tr>
                 <th>
-                    <p-columnFilter type="text" field="name" placeholder="Search by name"
-                        ariaLabel="Filter Name"></p-columnFilter>
+                    <p-columnFilter type="text" field="platform" placeholder="Filter by platform"
+                        ariaLabel="Filter Platform"></p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="text" field="country.name" placeholder="Search by country"
-                        ariaLabel="Filter Country"></p-columnFilter>
-                </th>
-                <th>
-                    <!-- <p-columnFilter field="representative" matchMode="in" [showMenu]="false">
-                     <ng-template #filter let-value let-filter="filterCallback">
-                         <p-multiselect
-                             [(ngModel)]="value"
-                             placeholder="Any"
-                             (onChange)="filter($event.value)"
-                             optionLabel="name"
-                             [style]="{'min-width': '14rem'}"
-                         >
-                             <ng-template #filter let-value let-filter="filterCallback">
-                                 <p-multiselect [(ngModel)]="value" [options]="representatives" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name" [style]="{'min-width': '14rem'}" [panelStyle]="{ minWidth: '16rem' }">
-                                     <ng-template let-option #item>
-                                         <div class="flex items-center gap-2">
-                                             <img [alt]="option.label" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ option.image }}" style="width: 32px" />
-                                             <span>{{ option.name }}</span>
-                                         </div>
-                                     </ng-template>
-                                 </p-multiselect>
-                             </ng-template>
-                         </p-multiselect>
-                     </ng-template>
-                 </p-columnFilter> -->
-                </th>
-                <th>
-                    <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
-                        <ng-template #filter let-value let-filter="filterCallback">
-                            <p-select [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One"
-                                [showClear]="true" [style]="{'min-width': '12rem'}">
-                                <ng-template let-option #item>
-                                    <p-tag [value]="option.value" [severity]="getSeverity(option.value)!" />
+                    <p-columnFilter field="type" matchMode="equals" [showMenu]="false">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-select [options]="investmentTypes" (onChange)="filter($event.value)"
+                                placeholder="Select Type" [showClear]="true" [style]="{'min-width': '12rem'}">
+                                <ng-template let-option pTemplate="item">
+                                    <p-tag [value]="option.value" [severity]="getTypeSeverity(option.value)!" />
                                 </ng-template>
                             </p-select>
                         </ng-template>
                     </p-columnFilter>
                 </th>
                 <th>
-                    <p-columnFilter type="boolean" field="verified"></p-columnFilter>
+                    <p-columnFilter type="numeric" field="amount" placeholder="Filter by amount"
+                        ariaLabel="Filter Amount"></p-columnFilter>
+                </th>
+                <th>
+                </th>
+                <th>
+                </th>
+                <th>
                 </th>
             </tr>
         </ng-template>
-        <ng-template #body let-customer>
+        <ng-template pTemplate="body" let-investment>
             <tr>
                 <td>
-                    {{ customer.name }}
+                    {{ investment.platform }}
                 </td>
                 <td>
-                    <div class="flex items-center gap-2">
-                        <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-                            [class]="'flag flag-' + customer.country.code" style="width: 20px" />
-                        <span>{{ customer.country.name }}</span>
+                    <p-tag [value]="investment.type" [severity]="getTypeSeverity(investment.type)!" />
+                </td>
+                <td>
+                    {{ formatCurrency(investment.amount) }}
+                </td>
+                <td>
+                    <ng-container *ngIf="investment.interestRate">
+                        {{ investment.interestRate.toFixed(2) }}%
+                    </ng-container>
+                    <ng-container *ngIf="!investment.interestRate && investment.quantity">
+                        {{ investment.quantity }} g
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="investment.tenure">
+                        {{ investment.tenure }} days
+                    </ng-container>
+                    <ng-container *ngIf="investment.lockInPeriod">
+                        {{ investment.lockInPeriod }} months
+                    </ng-container>
+                    <ng-container *ngIf="!investment.tenure && !investment.lockInPeriod && investment.maturityDate">
+                        Until {{ formatDate(investment.maturityDate) }}
+                    </ng-container>
+                </td>
+                <td>
+                    <div class="flex flex-column">
+                        <ng-container *ngIf="investment.payoutOption">
+                            <span class="mx-3"><strong>Payout:</strong> {{ investment.payoutOption }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="investment.frequency">
+                            <span class="mx-3"><strong>Frequency:</strong> {{
+                                capitalizeFirstLetter(investment.frequency) }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="investment.maturityDate">
+                            <span><strong>Maturity:</strong> {{ formatDate(investment.maturityDate) }}</span>
+                        </ng-container>
                     </div>
-                </td>
-                <td>
-                    <div class="flex items-center gap-2">
-                        <img [alt]="customer.representative.name"
-                            src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}"
-                            width="32" style="vertical-align: middle" />
-                        <span>{{ customer.representative.name }}</span>
-                    </div>
-                </td>
-                <td>
-                    <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)!" />
-                </td>
-                <td>
-                    <i class="pi" [ngClass]="{
-                         'text-green-500 pi-check-circle': customer.verified,
-                         'text-red-500 pi-times-circle': !customer.verified
-                     }"></i>
                 </td>
             </tr>
         </ng-template>
-        <ng-template #emptymessage>
+        <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="5">No customers found.</td>
+                <td colspan="6">No investments found.</td>
             </tr>
         </ng-template>
     </p-table>
