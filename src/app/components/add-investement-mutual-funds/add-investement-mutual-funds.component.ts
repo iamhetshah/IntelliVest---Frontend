@@ -142,9 +142,11 @@ export class AddInvestementMutualFundsComponent {
     if (this.mfForm.invalid) {
       return;
     }
+
     this.tryAgainAnalyze = false;
     this.loading = true;
-    this.saveInvestShow = false;
+    this.saveInvestShow = false; // Ensure the analyze button is initially visible
+
     this.http
       .post<{ success: string; component: string }>(
         backendApis.analysis.stock,
@@ -160,19 +162,20 @@ export class AddInvestementMutualFundsComponent {
         next: (res) => {
           const html = res.component;
           this.sanitizedHtml = html!;
-          if (
-            res.component.length === 0 ||
-            res.component === null ||
-            res.component === 'null'
-          ) {
+
+          if (!html || html.length === 0 || html === 'null') {
             this.tryAgainAnalyze = true;
+            this.saveInvestShow = false; // Ensure the analyze button appears again
+          } else {
+            this.saveInvestShow = true;
           }
-          this.saveInvestShow = true;
+
           this.loading = false;
         },
         error: (err) => {
           this.loading = false;
-          this.saveInvestShow = true;
+          this.saveInvestShow = false; // Ensure analyze button is visible again
+          this.tryAgainAnalyze = true;
         },
       });
   }

@@ -140,7 +140,8 @@ export class AddInvestementStockComponent implements OnDestroy {
         },
         error: (err) => {
           this.loading = false;
-          this.saveInvestShow = true;
+          this.saveInvestShow = false; // Ensure the analyze button is visible again
+          this.tryAgainAnalyze = true; // Show "Please try again!"
         },
       });
   }

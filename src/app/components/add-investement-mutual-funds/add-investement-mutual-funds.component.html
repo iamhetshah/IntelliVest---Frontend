@@ -51,7 +51,8 @@
     <div class="grid gap-3">
         @if (!this.saveInvestShow) {
         <p-button styleClass="mt-3 w-full" size="large" [loading]="loading"
-            [label]="this.loading?'We are analyzing your investment':'Analyze'" (onClick)="this.analyze()" />
+            [label]="this.loading?'We are analyzing your investment...Shouldn\'t take more than a minute':'Analyze'"
+            (onClick)="this.analyze()" />
         }
         @if(this.tryAgainAnalyze) {
         <p-message severity="danger" variant="outlined">Please try again!</p-message>
