@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const helper = require("./helpers/index");
 require("./config/db");
 const yahooFinance = require("yahoo-finance2").default;
-const originalStock = require("../api/models/originalStocks");
+// const originalStock = require("../api/models/originalStocks");
 
 // Connect DB
 mongoose.Promise = global.Promise;
@@ -33,7 +33,8 @@ const IndianStocks = Object.freeze({
   BAJAJ_FINANCE: "BAJFINANCE.NS",
   MARUTI: "MARUTI.NS",
   LARSEN_TUBRO: "LT.NS",
-  // GOLD: "GC=F",
+  TSLA: "TSLA",
+  CRUDE: "CL=F",
 });
 
 app.get("/api/stock/dropdown", async (req, res) => {

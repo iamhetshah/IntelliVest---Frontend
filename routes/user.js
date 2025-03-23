@@ -10,6 +10,12 @@ router.post("/login", makeRequest, userController.login);
 
 router.get("/verify_token", makeRequest, userMiddleware, userController.verify);
 
+router.post(
+  "/add-mutual",
+  makeRequest,
+  userMiddleware,
+  userController.mutualStock
+);
 // router.get(
 //   "/stock/dropdown",
 //   makeRequest,

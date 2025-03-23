@@ -7,6 +7,9 @@ const mutualFundSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    investName: {
+      type: String,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

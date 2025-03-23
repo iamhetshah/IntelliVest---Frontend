@@ -822,7 +822,13 @@ const calculateAverage = (values) => {
 // Add Stocks
 exports.addStock = async (req, res, next) => {
   try {
-    const { stock_name, quantity, price, stock_type,platform } = req.body;
+    const {
+      stock_name,
+      quantity,
+      price,
+      stock_type,
+      platform = "Intellivest",
+    } = req.body;
     const userId = req.userData._id;
 
     const stock = await StockModel({
@@ -832,22 +838,66 @@ exports.addStock = async (req, res, next) => {
       userId: userId,
       investment_type: "Stock",
       platform: platform,
+      stock_type,
     });
 
     if (stock_type == "BUY") {
-      stock.buying_price = price
+      stock.buying_price = price;
     }
     if (stock_type == "SELL") {
-      stock.selling_price = price
+      stock.selling_price = price;
     }
 
-    await stock.save()
+    await stock.save();
 
     return res.status(200).json({
-      message:`Stocks successfully ${stock_type}` 
-    })
+      message: `Stocks successfully ${stock_type}`,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
+// Add Mutual Fund
+exports.mutualStock = async (req, res, next) => {
+  try {
+    const objValidation = new niv.Validator(req.body, {
+      investAmount: "min:1",
+    });
+    const matched = await objValidation.check();
 
+    if (!matched) {
+      return res.status(422).send({
+        message: "Validation error",
+        errors: objValidation.errors,
+      });
+    }
+
+    const {
+      fundType,
+      investType,
+      riskProfile,
+      investAmount,
+      platform = "Intellivest",
+      investName,
+    } = req.body;
+    const userId = req.userData._id;
+
+    const fund = await MutualFundModel({
+      platform: platform,
+      userId: userId,
+      fundType: fundType,
+      investType: investType,
+      investAmount: investAmount,
+      riskProfile: riskProfile,
+      investName: investName,
+    });
+
+    await fund.save();
+
+    return res.status(200).json({
+      message: "Mutual Fund successfully inversted",
+    });
   } catch (error) {
     next(error);
   }

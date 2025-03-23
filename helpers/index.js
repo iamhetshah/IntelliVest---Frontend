@@ -254,10 +254,10 @@ exports.userInvestmentData = async (user, invested_apps) => {
         "PPF",
         "Mutual Fund",
       ];
-      const selectedTypes = faker.helpers.arrayElements(investmentTypes, 4);
+      const selectedTypes = faker.helpers.arrayElements(investmentTypes, 5);
 
       return selectedTypes
-        .map((type) => generateMockData(type, platform, user, 2))
+        .map((type) => generateMockData(type, platform, user, 1))
         .flat();
     });
 
