@@ -17,33 +17,28 @@ router.get("/verify_token", makeRequest, userMiddleware, userController.verify);
 //   userController.getStocksDropDown
 // );
 
-router.get("/dashboard",
+router.get(
+  "/dashboard",
   makeRequest,
   userMiddleware,
   userController.userDashboard
-)
+);
 
-router.get("/user-investment",
+router.get(
+  "/user-investment",
   makeRequest,
   userMiddleware,
   userController.userInvestment
-)
+);
 
-router.get("/pie-chart",
-  makeRequest,
-  userMiddleware,
-  userController.pie
-)
+router.get("/pie-chart", makeRequest, userMiddleware, userController.pie);
 
-router.get("/bar-chart",
+router.get(
+  "/bar-chart",
   makeRequest,
   userMiddleware,
   userController.averageReturns
-)
+);
 
-router.post("/add-stock",
-  makeRequest,
-  userMiddleware,
-  userController.addStock
-)
+router.post("/add-stock", makeRequest, userMiddleware, userController.addStock);
 module.exports = router;

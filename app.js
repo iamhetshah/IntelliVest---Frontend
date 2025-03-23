@@ -20,6 +20,7 @@ app.use("/uploads", express.static("uploads"));
 
 // Routes
 const userRoutes = require("./routes/user");
+const llmRoutes = require("./routes/llm");
 
 const IndianStocks = Object.freeze({
   RELIANCE: "RELIANCE.NS",
@@ -44,7 +45,10 @@ app.get("/api/stock/dropdown", async (req, res) => {
           const data = await yahooFinance.quoteSummary(symbol, {
             modules: ["price"],
           });
-          return { name:symbol, price: data?.price?.regularMarketPrice || "N/A" };
+          return {
+            name: symbol,
+            price: data?.price?.regularMarketPrice || "N/A",
+          };
         } catch (err) {
           console.error(`Failed to fetch ${symbol}`, err.message);
           return { symbol, price: "N/A" };
@@ -67,6 +71,7 @@ app.get("/api/stock/dropdown", async (req, res) => {
 
 // API End Point
 app.use("/api", userRoutes);
+app.use("/api/v1", llmRoutes);
 
 // cors middleware
 app.use((req, res, next) => {
