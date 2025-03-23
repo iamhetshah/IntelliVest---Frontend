@@ -4,10 +4,11 @@ const morgan = require("morgan");
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const helper = require('./helpers/index')
-require('./config/db')
+const helper = require("./helpers/index");
+require("./config/db");
 const yahooFinance = require("yahoo-finance2").default;
-const originalStock = require("../api/models/originalStocks")
+const originalStock = require("../api/models/originalStocks");
+
 // Connect DB
 mongoose.Promise = global.Promise;
 
@@ -18,7 +19,7 @@ app.use(bodyParser.json());
 app.use("/uploads", express.static("uploads"));
 
 // Routes
-const userRoutes = require('./routes/user')
+const userRoutes = require("./routes/user");
 
 const IndianStocks = Object.freeze({
   RELIANCE: "RELIANCE.NS",
@@ -31,49 +32,41 @@ const IndianStocks = Object.freeze({
   BAJAJ_FINANCE: "BAJFINANCE.NS",
   MARUTI: "MARUTI.NS",
   LARSEN_TUBRO: "LT.NS",
-  GOLD:'GC=F'
+  // GOLD: "GC=F",
 });
-app.get("/stock/:name", async (req, res) => {
+
+app.get("/api/stock/dropdown", async (req, res) => {
   try {
-    const stockKey = req.params.name.toUpperCase(); // Convert to uppercase for match
-    const symbol = IndianStocks[stockKey]; // Get the corresponding symbol
+    const stockSymbols = Object.values(IndianStocks);
+    const stockData = await Promise.all(
+      stockSymbols.map(async (symbol) => {
+        try {
+          const data = await yahooFinance.quoteSummary(symbol, {
+            modules: ["price"],
+          });
+          return { name:symbol, price: data?.price?.regularMarketPrice || "N/A" };
+        } catch (err) {
+          console.error(`Failed to fetch ${symbol}`, err.message);
+          return { symbol, price: "N/A" };
+        }
+      })
+    );
 
-    if (!symbol) {
-      return res
-        .status(400)
-        .json({ error: "Invalid stock name. Use a valid key from the list." });
-    }
-
-    const stockData = await yahooFinance.quoteSummary(symbol, {
-      modules: ["price"],
-    });
-
-    if (!stockData || !stockData.price) {
-      return res.status(404).json({ error: "Stock data not found" });
-    }
-
-    const data = originalStock({
-      name: stockKey,
-      price: stockData.price.regularMarketPrice,
-    });
-
-    await data.save()
-
-    res.json({
-      symbol: stockData.price.symbol,
-      currentPrice: stockData.price.regularMarketPrice,
-      currency: stockData.price.currency,
-      marketState: stockData.price.marketState,
+    return res.status(200).json({
+      message: "Ok",
+      result: stockData,
     });
   } catch (error) {
-    console.error("Error fetching stock data:", error);
+    console.error(
+      "Error fetching stock data:",
+      error.response?.data || error.message
+    );
     res.status(500).json({ error: "Failed to retrieve stock data" });
   }
 });
 
-
 // API End Point
-app.use('/api',userRoutes)
+app.use("/api", userRoutes);
 
 // cors middleware
 app.use((req, res, next) => {
@@ -117,6 +110,4 @@ app.use(async (error, req, res, next) => {
   });
 });
 
-
-
-module.exports = app
+module.exports = app;

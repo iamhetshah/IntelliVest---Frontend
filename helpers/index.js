@@ -50,10 +50,203 @@ exports.writeErrorLog = async (req, error) => {
   fs.appendFileSync(logFilePath, logEntry);
 };
 
+// exports.userInvestmentData = async (user, invested_apps) => {
+//   try {
+//     const mockData = invested_apps.flatMap((app) => {
+//       const platform = app; // e.g., angleOne, groww, etc.
+//       const investmentTypes = [
+//         "Stock",
+//         "Fixed Deposit",
+//         "Gold",
+//         "PPF",
+//         "Mutual Fund",
+//       ];
+//       const selectedTypes = faker.helpers.arrayElements(investmentTypes, 3);
+
+//       return selectedTypes
+//         .map((type) => generateMockData(type, platform, user, 1))
+//         .flat();
+//     });
+
+//     if (!mockData.length) {
+//       console.log("No mock data generated.");
+//       return [];
+//     }
+
+//     console.log("Generated Mock Data:", mockData);
+
+//     for (const data of mockData) {
+//       console.log(`Processing ${data.investment_type}`);
+//       switch (data.investment_type) {
+//         case "Stock":
+//           await StockModel.create(data);
+//           break;
+//         case "Fixed Deposit":
+//           await FixedDepositModel.create(data);
+//           break;
+//         case "Gold":
+//           await GoldModel.create(data);
+//           break;
+//         case "PPF":
+//           await PPFModel.create(data);
+//           break;
+//         case "Mutual Fund":
+//           await MutualFundModel.create(data);
+//           break;
+//         default:
+//           console.log("Unknown investment type:", data.investment_type);
+//       }
+//     }
+
+//     return mockData;
+//   } catch (error) {
+//     console.error("Error Occurred in userInvestmentData:", error.message);
+//     throw error;
+//   }
+// };
+
+// const generateMockData = (investmentType, platform, user, count = 1) => {
+//   const mockData = [];
+
+//   for (let i = 0; i < count; i++) {
+//     const baseData = {
+//       userId: user._id,
+//       platform,
+//       investment_type: investmentType,
+//     };
+
+//     switch (investmentType) {
+//       case "Stock":
+//         baseData.stock_name = faker.helpers.arrayElement([
+//           "RELIANCE",
+//           "TCS",
+//           "HDFC_BANK",
+//           "ICICI_BANK",
+//           "HUL",
+//           "SBI",
+//           "BAJAJ_FINANCE",
+//           "MARUTI",
+//           "LARSEN_TUBRO",
+//         ]);
+//         baseData.buying_price = faker.number.float({
+//           min: 100,
+//           max: 5000,
+//           precision: 0.01,
+//         });
+//         baseData.selling_price = faker.number.float({
+//           min: 100,
+//           max: 6000,
+//           precision: 0.01,
+//         });
+//         baseData.quantity = faker.number.int({ min: 1, max: 100 });
+//         baseData.stock_tax = faker.number.float({
+//           min: 1,
+//           max: 50,
+//           precision: 0.01,
+//         });
+//         baseData.pe_ratio = faker.number.float({
+//           min: 5,
+//           max: 50,
+//           precision: 0.01,
+//         });
+//         baseData.volume = faker.number.int({ min: 1000, max: 100000 });
+//         baseData.eps = faker.number.float({ min: 1, max: 20, precision: 0.01 });
+//         baseData.stock_type = faker.helpers.arrayElement(["BUY", "SELL"]);
+//         baseData.market_cap = faker.number.float({
+//           min: 500,
+//           max: 10000,
+//           precision: 0.01,
+//         });
+//         break;
+
+//       case "Fixed Deposit":
+//         baseData.investAmount = faker.number.float({
+//           min: 1000,
+//           max: 1000000,
+//           precision: 0.01,
+//         });
+//         baseData.tenure = faker.number.int({ min: 1, max: 200 });
+//         baseData.payoutOption = faker.helpers.arrayElement([
+//           "Monthly",
+//           "Quarterly",
+//           "Yearly",
+//           "On Maturity",
+//         ]);
+//         baseData.interestRate = faker.number.float({
+//           min: 7,
+//           max: 8.5,
+//           precision: 0.01,
+//         });
+//         break;
+
+//       case "Gold":
+//         baseData.investType = faker.helpers.arrayElement([
+//           "Digital Gold",
+//           "EIF",
+//           "Sovereign Gold Bond",
+//         ]);
+//         baseData.investAmount = faker.number.float({
+//           min: 1,
+//           max: 1000000,
+//           precision: 0.01,
+//         });
+//         baseData.quantity = faker.number.float({
+//           min: 0.01,
+//           max: 1000,
+//           precision: 0.01,
+//         });
+//         baseData.lockInPeriod = faker.number.int({ min: 0, max: 120 });
+//         break;
+
+//       case "PPF":
+//         baseData.investAmount = faker.number.float({
+//           min: 500,
+//           max: 150000,
+//           precision: 0.01,
+//         });
+//         baseData.frequency = faker.helpers.arrayElement(["monthly", "yearly"]);
+//         baseData.interestRate = faker.number.float({
+//           min: 7,
+//           max: 8.5,
+//           precision: 0.01,
+//         });
+//         baseData.maturityDate = faker.date.future({ years: 15 });
+//         break;
+
+//       case "Mutual Fund":
+//         baseData.fundType = faker.helpers.arrayElement([
+//           "Equity",
+//           "Hybrid",
+//           "Index",
+//           "Debt",
+//         ]);
+//         baseData.investType = faker.helpers.arrayElement(["LUMP SUM", "SIP"]);
+//         baseData.investAmount = faker.number.float({
+//           min: 1000,
+//           max: 100000,
+//           precision: 0.01,
+//         });
+//         baseData.riskProfile = faker.helpers.arrayElement([
+//           "Low",
+//           "Medium",
+//           "High",
+//         ]);
+//         break;
+
+//       default:
+//         throw new Error(`Unsupported investment type: ${investmentType}`);
+//     }
+
+//     mockData.push(baseData);
+//   }
+
+//   return mockData;
+// };
+
 exports.userInvestmentData = async (user, invested_apps) => {
   try {
     const mockData = invested_apps.flatMap((app) => {
-      const platform = app; // e.g., angleOne, groww, etc.
+      const platform = app;
       const investmentTypes = [
         "Stock",
         "Fixed Deposit",
@@ -61,41 +254,20 @@ exports.userInvestmentData = async (user, invested_apps) => {
         "PPF",
         "Mutual Fund",
       ];
-      const selectedTypes = faker.helpers.arrayElements(investmentTypes, 3);
+      const selectedTypes = faker.helpers.arrayElements(investmentTypes, 4);
 
       return selectedTypes
-        .map((type) => generateMockData(type, platform, user, 1))
+        .map((type) => generateMockData(type, platform, user, 2))
         .flat();
     });
 
-    if (!mockData.length) {
-      console.log("No mock data generated.");
-      return [];
-    }
+    if (!mockData.length) return [];
 
     console.log("Generated Mock Data:", mockData);
 
     for (const data of mockData) {
       console.log(`Processing ${data.investment_type}`);
-      switch (data.investment_type) {
-        case "Stock":
-          await StockModel.create(data);
-          break;
-        case "Fixed Deposit":
-          await FixedDepositModel.create(data);
-          break;
-        case "Gold":
-          await GoldModel.create(data);
-          break;
-        case "PPF":
-          await PPFModel.create(data);
-          break;
-        case "Mutual Fund":
-          await MutualFundModel.create(data);
-          break;
-        default:
-          console.log("Unknown investment type:", data.investment_type);
-      }
+      await saveInvestmentData(data);
     }
 
     return mockData;
@@ -105,7 +277,23 @@ exports.userInvestmentData = async (user, invested_apps) => {
   }
 };
 
+const saveInvestmentData = async (data) => {
+  const modelMap = {
+    Stock: StockModel,
+    "Fixed Deposit": FixedDepositModel,
+    Gold: GoldModel,
+    PPF: PPFModel,
+    "Mutual Fund": MutualFundModel,
+  };
 
+  const Model = modelMap[data.investment_type];
+  if (!Model) {
+    console.error("Unknown investment type:", data.investment_type);
+    return;
+  }
+
+  await Model.create(data);
+};
 
 const generateMockData = (investmentType, platform, user, count = 1) => {
   const mockData = [];
@@ -115,128 +303,125 @@ const generateMockData = (investmentType, platform, user, count = 1) => {
       userId: user._id,
       platform,
       investment_type: investmentType,
+      createdAt: new Date(),
+      status: faker.helpers.arrayElement(["LIVE", "CLOSED", "PENDING"]),
     };
 
     switch (investmentType) {
       case "Stock":
-        baseData.stock_name = faker.helpers.arrayElement([
-          "RELIANCE",
-          "TCS",
-          "HDFC_BANK",
-          "ICICI_BANK",
-          "HUL",
-          "SBI",
-          "BAJAJ_FINANCE",
-          "MARUTI",
-          "LARSEN_TUBRO",
-        ]);
-        baseData.buying_price = faker.number.float({
-          min: 100,
-          max: 5000,
-          precision: 0.01,
-        });
-        baseData.selling_price = faker.number.float({
-          min: 100,
-          max: 6000,
-          precision: 0.01,
-        });
-        baseData.quantity = faker.number.int({ min: 1, max: 100 });
-        baseData.stock_tax = faker.number.float({
-          min: 1,
-          max: 50,
-          precision: 0.01,
-        });
-        baseData.pe_ratio = faker.number.float({
-          min: 5,
-          max: 50,
-          precision: 0.01,
-        });
-        baseData.volume = faker.number.int({ min: 1000, max: 100000 });
-        baseData.eps = faker.number.float({ min: 1, max: 20, precision: 0.01 });
-        baseData.stock_type = faker.helpers.arrayElement(["BUY", "SELL"]);
-        baseData.market_cap = faker.number.float({
-          min: 500,
-          max: 10000,
-          precision: 0.01,
+        Object.assign(baseData, {
+          stock_name: faker.helpers.arrayElement([
+            "RELIANCE",
+            "TCS",
+            "HDFC_BANK",
+            "ICICI_BANK",
+            "HUL",
+            "SBI",
+            "BAJAJ_FINANCE",
+            "MARUTI",
+            "LARSEN_TUBRO",
+          ]),
+          buying_price: faker.number.float({
+            min: 100,
+            max: 5000,
+            precision: 0.01,
+          }),
+          selling_price: faker.number.float({
+            min: 100,
+            max: 6000,
+            precision: 0.01,
+          }),
+          quantity: faker.number.int({ min: 1, max: 100 }),
+          stock_tax: faker.number.float({ min: 1, max: 50, precision: 0.01 }),
+          pe_ratio: faker.number.float({ min: 5, max: 50, precision: 0.01 }),
+          volume: faker.number.int({ min: 1000, max: 100000 }),
+          eps: faker.number.float({ min: 1, max: 20, precision: 0.01 }),
+          stock_type: faker.helpers.arrayElement(["BUY", "SELL"]),
+          market_cap: faker.number.float({
+            min: 500,
+            max: 10000,
+            precision: 0.01,
+          }),
         });
         break;
 
       case "Fixed Deposit":
-        baseData.investAmount = faker.number.float({
-          min: 1000,
-          max: 1000000,
-          precision: 0.01,
-        });
-        baseData.tenure = faker.number.int({ min: 1, max: 200 });
-        baseData.payoutOption = faker.helpers.arrayElement([
-          "Monthly",
-          "Quarterly",
-          "Yearly",
-          "On Maturity",
-        ]);
-        baseData.interestRate = faker.number.float({
-          min: 7,
-          max: 8.5,
-          precision: 0.01,
+        Object.assign(baseData, {
+          investAmount: faker.number.float({
+            min: 1000,
+            max: 1000000,
+            precision: 0.01,
+          }),
+          tenure: faker.number.int({ min: 1, max: 200 }),
+          payoutOption: faker.helpers.arrayElement([
+            "Monthly",
+            "Quarterly",
+            "Yearly",
+            "On Maturity",
+          ]),
+          interestRate: faker.number.float({
+            min: 7,
+            max: 8.5,
+            precision: 0.01,
+          }),
         });
         break;
 
       case "Gold":
-        baseData.investType = faker.helpers.arrayElement([
-          "Digital Gold",
-          "EIF",
-          "Sovereign Gold Bond",
-        ]);
-        baseData.investAmount = faker.number.float({
-          min: 1,
-          max: 1000000,
-          precision: 0.01,
+        Object.assign(baseData, {
+          investType: faker.helpers.arrayElement([
+            "Digital Gold",
+            "EIF",
+            "Sovereign Gold Bond",
+          ]),
+          investAmount: faker.number.float({
+            min: 1,
+            max: 1000000,
+            precision: 0.01,
+          }),
+          quantity: faker.number.float({
+            min: 0.01,
+            max: 1000,
+            precision: 0.01,
+          }),
+          lockInPeriod: faker.number.int({ min: 0, max: 120 }),
         });
-        baseData.quantity = faker.number.float({
-          min: 0.01,
-          max: 1000,
-          precision: 0.01,
-        });
-        baseData.lockInPeriod = faker.number.int({ min: 0, max: 120 });
         break;
 
       case "PPF":
-        baseData.investAmount = faker.number.float({
-          min: 500,
-          max: 150000,
-          precision: 0.01,
+        Object.assign(baseData, {
+          investAmount: faker.number.float({
+            min: 500,
+            max: 150000,
+            precision: 0.01,
+          }),
+          frequency: faker.helpers.arrayElement(["monthly", "yearly"]),
+          interestRate: faker.number.float({
+            min: 7,
+            max: 8.5,
+            precision: 0.01,
+          }),
+          maturityDate: faker.date.future({ years: 15 }),
         });
-        baseData.frequency = faker.helpers.arrayElement(["monthly", "yearly"]);
-        baseData.interestRate = faker.number.float({
-          min: 7,
-          max: 8.5,
-          precision: 0.01,
-        });
-        baseData.maturityDate = faker.date.future({ years: 15 });
         break;
 
       case "Mutual Fund":
-        baseData.fundType = faker.helpers.arrayElement([
-          "Equity",
-          "Hybrid",
-          "Index",
-          "Debt",
-        ]);
-        baseData.investType = faker.helpers.arrayElement(["LUMP SUM", "SIP"]);
-        baseData.investAmount = faker.number.float({
-          min: 1000,
-          max: 100000,
-          precision: 0.01,
+        Object.assign(baseData, {
+          fundType: faker.helpers.arrayElement([
+            "Equity",
+            "Hybrid",
+            "Index",
+            "Debt",
+          ]),
+          investType: faker.helpers.arrayElement(["LUMP SUM", "SIP"]),
+          investAmount: faker.number.float({
+            min: 1000,
+            max: 100000,
+            precision: 0.01,
+          }),
+          riskProfile: faker.helpers.arrayElement(["Low", "Medium", "High"]),
         });
-        baseData.riskProfile = faker.helpers.arrayElement([
-          "Low",
-          "Medium",
-          "High",
-        ]);
         break;
-
-      default:
-        throw new Error(`Unsupported investment type: ${investmentType}`);
     }
 
     mockData.push(baseData);
@@ -244,4 +429,3 @@ const generateMockData = (investmentType, platform, user, count = 1) => {
 
   return mockData;
 };
-

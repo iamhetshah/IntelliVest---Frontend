@@ -6,7 +6,7 @@ const stockSchema = new mongoose.Schema(
   {
     platform: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
     },
     stock_name: {
@@ -59,6 +59,9 @@ const stockSchema = new mongoose.Schema(
       required: true,
     },
     investment_type: {
+      type: String,
+    },
+    status: {
       type: String,
     },
   },

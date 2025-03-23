@@ -33,6 +33,9 @@ const ppfSchema = new mongoose.Schema(
     investment_type: {
       type: String,
     },
+    status: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
