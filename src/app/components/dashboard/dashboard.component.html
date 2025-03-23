@@ -1,3 +1,13 @@
+@if (this.portfolioLoading) {
+<div
+    class="fixed bg-black flex items-center gap-10 justify-center flex-col text-white w-screen h-screen z-20 top-0 left-0">
+    <span class="animate-pulse text-6xl">Wait while we do magic...
+        <i class="pi pi-sparkles" style="font-size: 3rem;"></i>
+    </span>
+    <span>Please refresh if app shows no data available</span>
+</div>
+}
+
 <p-dialog [(visible)]="visible" [modal]="true" [maximizable]="true"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '50vw' }" [draggable]="false"
     [resizable]="false">
@@ -91,7 +101,7 @@
     <div class="grid gap-7 grid-cols-1 md:grid-cols-3 mb-8">
         @if(this.portfolioData()){<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h1 class="font-bold text-xl mb-3">Recommendations</h1>
-            <ul class="grid gap-5">
+            <ul class="grid">
                 @for (item of this.portfolioData()?.data?.analysis?.insights?.recommendations; track $index) {
                 <li class="p-2 rounded text-zinc-600 text-">{{item}}</li>
                 }
@@ -99,7 +109,7 @@
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h1 class="font-bold text-xl mb-3">Strengths</h1>
-            <ul class="grid gap-5">
+            <ul class="grid">
                 @for (item of this.portfolioData()?.data?.analysis?.insights?.strengths; track $index) {
                 <li class="p-2 rounded text-zinc-600 text-">{{item}}</li>
                 }
@@ -107,7 +117,7 @@
         </div>
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
             <h1 class="font-bold text-xl mb-3">Weaknesses</h1>
-            <ul class="grid gap-5">
+            <ul class="grid">
                 @for (item of this.portfolioData()?.data?.analysis?.insights?.weaknesses; track $index) {
                 <li class="p-2 rounded text-zinc-600 text-">{{item}}</li>
                 }

@@ -17,7 +17,7 @@
     }
     @if(this.selectedInvestement.toLowerCase() === 'stock') {
     <h1 class="text-3xl text-zinc-700 font-bold">Stock Investement</h1>
-    <app-add-investement-stock></app-add-investement-stock>
+    <app-add-investement-stock (closeModalEvent)="this.selectedInvestement = ''"></app-add-investement-stock>
     }
     @if(this.selectedInvestement.toLowerCase() === 'mutual funds') {
     <h1 class="text-3xl text-zinc-700 font-bold">Mutual Funds</h1>

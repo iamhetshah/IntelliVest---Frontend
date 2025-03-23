@@ -1,1 +1,66 @@
-<p>add-investement-mutual-funds works!</p>
+<div class="p-3 grid gap-5" [formGroup]="this.mfForm">
+    <p-select [options]="this.investTypeTypes" required="true" size="large" formControlName="investType"
+        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="How you wanna invest?"
+        class="w-full">
+        <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2">
+                <div>{{ selectedOption.name }}</div>
+            </div>
+        </ng-template>
+        <ng-template let-stock #item>
+            {{ stock.name }}
+        </ng-template>
+    </p-select>
+    <p-select [options]="this.investNames" required="true" size="large" formControlName="investmentName"
+        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Choose an investment"
+        class="w-full">
+        <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2">
+                <div>{{ selectedOption.name }}</div>
+            </div>
+        </ng-template>
+        <ng-template let-stock #item>
+            {{ stock.name }}
+        </ng-template>
+    </p-select>
+    <p-select [options]="this.fundTypeTypes" required="true" size="large" formControlName="fundType" optionLabel="name"
+        [filter]="true" filterBy="name" [showClear]="true" placeholder="Select fund type" class="w-full">
+        <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2">
+                <div>{{ selectedOption.name }}</div>
+            </div>
+        </ng-template>
+        <ng-template let-stock #item>
+            {{ stock.name }}
+        </ng-template>
+    </p-select>
+    <p-select [options]="this.riskTypeTypes" required="true" size="large" formControlName="riskProfile"
+        optionLabel="name" [filter]="true" filterBy="name" [showClear]="true"
+        placeholder="How much risk would you like to take?" class="w-full">
+        <ng-template #selectedItem let-selectedOption>
+            <div class="flex items-center gap-2">
+                <div>{{ selectedOption.name }}</div>
+            </div>
+        </ng-template>
+        <ng-template let-stock #item>
+            {{ stock.name }}
+        </ng-template>
+    </p-select>
+    <label for="Invest Amount">Invest Amount</label>
+    <p-inputnumber inputId="integeronly" id="Invest Amount" formControlName="investAmount" />
+    <div class="grid gap-3">
+        @if (!this.saveInvestShow) {
+        <p-button styleClass="mt-3 w-full" size="large" [loading]="loading"
+            [label]="this.loading?'We are analyzing your investment':'Analyze'" (onClick)="this.analyze()" />
+        }
+        @if(this.tryAgainAnalyze) {
+        <p-message severity="danger" variant="outlined">Please try again!</p-message>
+        } @else {
+        <app-investement-analysis-stock [data]="this.sanitizedHtml">
+        </app-investement-analysis-stock>
+        }
+
+        <p-button [disabled]="loading" styleClass="w-full" size="large" [label]="'Invest'"
+            (onClick)="this.saveInvest()" />
+    </div>
+</div>

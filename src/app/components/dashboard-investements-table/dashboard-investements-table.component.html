@@ -1,6 +1,6 @@
 <div class="card">
     <p-table #dt2 [value]="investments" dataKey="id" [loading]="loading"
-        [globalFilterFields]="['platform', 'type', 'amount']" [tableStyle]="{ 'min-width': '75rem' }">
+        [globalFilterFields]="['platform', 'type', 'amount', 'interestRate']" [tableStyle]="{ 'min-width': '75rem' }">
         <ng-template pTemplate="caption">
             <div class="flex">
                 <p-iconfield iconPosition="left" class="ml-auto">
@@ -15,12 +15,13 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th style="width:15%">Platform</th>
-                <th style="width:15%">Type</th>
-                <th style="width:18%">Amount</th>
-                <th style="width:15%">Interest Rate</th>
-                <th style="width:15%">Tenure/Quantity</th>
-                <th style="width:22%">Details</th>
+                <th style="width:16%">Platform</th>
+                <th style="width:12%">Type</th>
+                <th style="width:12%">Amount</th>
+                <th style="width:12%">Interest Rate</th>
+                <th style="width:12%">Tenure</th>
+                <th style="width:12%">Quantity</th>
+                <th style="width:24%">Details</th>
             </tr>
             <tr>
                 <th>
@@ -44,6 +45,8 @@
                         ariaLabel="Filter Amount"></p-columnFilter>
                 </th>
                 <th>
+                    <p-columnFilter type="numeric" field="interestRate" placeholder="Filter by interest"
+                        ariaLabel="Filter Interest"></p-columnFilter>
                 </th>
                 <th>
                 </th>
@@ -66,9 +69,6 @@
                     <ng-container *ngIf="investment.interestRate">
                         {{ investment.interestRate.toFixed(2) }}%
                     </ng-container>
-                    <ng-container *ngIf="!investment.interestRate && investment.quantity">
-                        {{ investment.quantity }} g
-                    </ng-container>
                 </td>
                 <td>
                     <ng-container *ngIf="investment.tenure">
@@ -80,6 +80,23 @@
                     <ng-container *ngIf="!investment.tenure && !investment.lockInPeriod && investment.maturityDate">
                         Until {{ formatDate(investment.maturityDate) }}
                     </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="investment.type === 'Stock'; else otherTypes">
+                        <ng-container *ngIf="investment.quantity">
+                            {{ investment.quantity }} {{ typeToQuantityMap[investment.type] }}
+                        </ng-container>
+                    </ng-container>
+
+                    <ng-template #otherTypes>
+                        <ng-container *ngIf="investment.type === 'Gold' && investment.quantity">
+                            {{ investment.quantity }} g
+                        </ng-container>
+                        <ng-container *ngIf="typeToQuantityMap[investment.type]">
+                            {{ investment.quantity }} {{ typeToQuantityMap[investment.type] }}
+                        </ng-container>
+                    </ng-template>
+
                 </td>
                 <td>
                     <div class="flex flex-column">

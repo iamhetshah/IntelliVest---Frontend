@@ -1,4 +1,4 @@
-const baseUrl = 'http://192.168.58.88:9090/api';
+const baseUrl = 'http://localhost:9090/api';
 const backendApis = {
   auth: {
     login: `${baseUrl}/login`,
@@ -19,6 +19,10 @@ const backendApis = {
   },
   stocks: {
     allStocks: `${baseUrl}/stock/dropdown`,
+    addStock: `${baseUrl}/add-stock`,
+  },
+  mutual_funds: {
+    add: `${baseUrl}/add-mutual`,
   },
 };
 

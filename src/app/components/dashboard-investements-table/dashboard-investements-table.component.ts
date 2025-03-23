@@ -71,6 +71,14 @@ export class DashboardInvestementsTableComponent implements AfterViewInit {
     return event.target as HTMLInputElement;
   }
 
+  typeToQuantityMap: { [key: string]: string } = {
+    'Fixed Deposit': '',
+    'Sovereign Gold Bond': 'g',
+    'Debt Mutual Fund (LUMP SUM)': '',
+    'Debt Mutual Fund (SIP)': '',
+    PPF: '',
+  };
+
   clear(table: Table) {
     table.clear();
   }

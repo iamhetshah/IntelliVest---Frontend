@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -36,12 +36,16 @@ import { Message } from 'primeng/message';
 export class AddInvestementStockComponent implements OnDestroy {
   stockForm = new FormGroup({
     investmentType: new FormControl('stock', [Validators.required]),
-    investmentName: new FormControl({ name: '' }, [Validators.required]),
+    investmentName: new FormControl({ name: '', price: 0 }, [
+      Validators.required,
+    ]),
     stockQuantity: new FormControl(0, [Validators.min(1)]),
     stockAction: new FormControl('', [Validators.required]),
     timeHorizon: new FormControl('', [Validators.required]),
-    currentPrice: new FormControl(9000, [Validators.required]),
+    currentPrice: new FormControl(0, [Validators.required]),
   });
+
+  @Output() closeModalEvent = new EventEmitter();
 
   stocks = [
     {
@@ -110,11 +114,13 @@ export class AddInvestementStockComponent implements OnDestroy {
     }
     this.tryAgainAnalyze = false;
     this.loading = true;
+    this.saveInvestShow = false;
     this.http
       .post<{ success: string; component: string }>(
         backendApis.analysis.stock,
         {
           ...this.stockForm.getRawValue(),
+          currentPrice: this.stockForm.getRawValue().investmentName!.price,
           investmentName: this.stockForm.getRawValue().investmentName!.name,
         }
       )
@@ -134,7 +140,7 @@ export class AddInvestementStockComponent implements OnDestroy {
         },
         error: (err) => {
           this.loading = false;
-          this.saveInvestShow = false;
+          this.saveInvestShow = true;
         },
       });
   }
@@ -143,5 +149,20 @@ export class AddInvestementStockComponent implements OnDestroy {
     if (this.stockForm.invalid) {
       return;
     }
+
+    const data = this.stockForm.getRawValue();
+
+    this.http
+      .post(backendApis.stocks.addStock, {
+        stock_name: data.investmentName?.name,
+        quantity: data.stockQuantity,
+        stock_type: data.stockAction,
+        price: data.investmentName?.price,
+      })
+      .subscribe({
+        next: (res) => {
+          this.closeModalEvent.emit();
+        },
+      });
   }
 }

@@ -17,7 +17,7 @@ import { Colors } from 'chart.js';
 import { HttpClient } from '@angular/common/http';
 import { PortfolioResponse } from '../../models/stock.analysis.model';
 import { DecimalPipe } from '@angular/common';
-import { DatePickerStyle } from 'primeng/datepicker';
+
 @Component({
   selector: 'app-dashboard',
   imports: [
@@ -63,13 +63,14 @@ export class DashboardComponent implements AfterViewInit {
     return Number.parseFloat(num);
   }
 
-  portfolioLoading = false;
+  portfolioLoading = true;
   constructor(private http: HttpClient) {
     Chart.register(Colors);
 
     this.http.get<PortfolioResponse>(backendApis.portfolio).subscribe({
       next: (res) => {
         this.portfolioData.set(res);
+        this.portfolioLoading = false;
         this.pieChart = new Chart(this.pieChartCanvas().nativeElement, {
           type: 'pie',
           data: {
